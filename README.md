@@ -22,7 +22,7 @@ Don't forget to run `docker commit` afterwards to save the state.
 For more information of how to configure it see the documentation below.
 
 ## Setup Details 
-(0.) Starting from a bare-bones Linux installation (this instance is using Debian 8.1 -- jessie) 
+Starting from a bare-bones Linux installation (this instance is using Debian 8.1 -- jessie) 
 
 1. Installing dependencies
   1. Installing plain MWS &  Miscellaneous deps, mainly `g++`, `cmake` and a bunch of libs. 
@@ -39,7 +39,7 @@ The current scripts assumes the MathML-enriched HTML is in `export/planetary/nar
 and the TEMA config in `lib/tema-config.json`. 
 Additionally you can (need to) provide a query processor to convert math text queries from the input syntax 
 to MathML and then provide a Javascript module in MWS frontend that posts to your converter and enable it. 
-The default one is based on [LateXML])(https://github.com/brucemiller/LaTeXML) and handles TeX-style input.
+The default one is based on [LateXML](https://github.com/brucemiller/LaTeXML) and handles TeX-style input.
 The parametrization of query processors should probably be improved in the MWS frontend project. 
 _This is the part you need to change to make a different instance._
 
