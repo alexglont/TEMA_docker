@@ -36,6 +36,11 @@ and [tema-proxy](https://github.com/KWARC/tema-proxy)
 3. Clone the relevant MMT archive (for which you want to set up the search engine).
 The current scripts assumes the MathML-enriched HTML is in `export/planetary/narration/`
 and the TEMA config in `lib/tema-config.json`. 
+Additionally you can (need to) provide a query processor to convert math text queries from the input syntax 
+to MathML and then provide a Javascript module in MWS frontend that posts to your converter and enable it. 
+The default one is based on [LateXML])(https://github.com/brucemiller/LaTeXML) and handles TeX-style input.
+The parametrization of query processors should probably be improved in the MWS frontend project. 
+
 _This is the part you need to change to make a different instance._
 
 4. Setting up generated content
