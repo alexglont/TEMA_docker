@@ -13,7 +13,7 @@ After installing docker (see (https://docs.docker.com/installation/)) you can ge
 ```docker pull kwarc/mathhub```
 
 Then you can start the web server (will start on localhost:9999) with: 
-```docker run -d -p 9999:8080 kwarc/mathhub start-mh ```
+```docker run -d -p 9999:8888 kwarc/mathhub start-mh ```
 
 For internal configuration/access (i.e. bash) you can run: 
 ```docker run -t -i kwarc/mathhub /bin/bash```
