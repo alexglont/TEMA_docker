@@ -10,13 +10,13 @@ Additionally, check the file `Dockerfile` as well as the `start-tema` start-up s
 
 ## Installation
 After installing docker (see (https://docs.docker.com/installation/)) you can get the fully setup up version from docker hub by running  
-```docker pull kwarc/mathhub```
+```docker pull kwarc/tema_search```
 
 Then you can start the web server (will start on localhost:9999) with: 
-```docker run -d -p 9999:8888 kwarc/mathhub start-mh ```
+```docker run -d -p 9999:8888 kwarc/tema_search start-tema ```
 
 For internal configuration/access (i.e. bash) you can run: 
-```docker run -t -i kwarc/mathhub /bin/bash```
+```docker run -t -i kwarc/tema_search /bin/bash```
 
 Don't forget to run `docker commit` afterwards to save the state.
 For more information of how to configure it see the documentation below.
