@@ -8,8 +8,12 @@ RUN echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache
 ## Basics
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
-    apt-get install -y git subversion  && \
+    apt-get install -y git subversion locales  && \
     apt-get clean
+ADD locale.gen /etc/locale.gen
+RUN locale-gen
+RUN echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
+RUN echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
 
 ## (1) Installing Dependencies
 # (1.1) MWS & Misc Deps 
@@ -35,11 +39,12 @@ ADD mws-es-config.sh /var/data/mws/scripts/elastic-search/config.sh
 RUN cd /var/data/ && mkdir MMT && cd MMT && svn co https://svn.kwarc.info/repos/MMT/deploy
 ## (4) Cloning MMT Library & OEIS-specific config
 RUN cd /var/data/ && git clone http://gl.mathhub.info/oeis/TestOEIS.git mmtarch
+ADD serve.msl /var/data/mmtarch/serve.msl
 RUN cd /var/data/mws-frontend/ && git checkout oeis-demo
 ## (5) Setting up generated content 
 # (5.1) Creating havests
 RUN cd /var/data/ && mkdir harvest
-RUN cd /var/data/ && find mmtarch/export/planetary/narration/ -name *.html | xargs -n 10 docs2harvest -c mmtarch/lib/tema-config.json -o harvest
+RUN cd /var/data/ && find mmtarch/export/oeis-pres/narration/ -name *.html | xargs -n 10 docs2harvest -c mmtarch/lib/tema-config.json -o harvest
 # (5.2) Indexing 
 RUN cd /var/data/ && mkdir index && mws/bin/mws-index -I harvest -o index/
 # (5.3) Generating elasticsearch json index, will out to `havest/` a .json file for every .harvest file
