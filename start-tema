@@ -5,7 +5,7 @@ export LC_ALL=en_US.UTF-8
 # (5.1) `service elasticsearch start` fails silently for some reason
 /usr/share/elasticsearch/bin/elasticsearch & 
 # then waiting for es to finish setting up
-sleep 5
+sleep 10
 # (5.2) Loading up elasticsearch index via MWS
 /var/data/mws/scripts/elastic-search/run-setup
 /var/data/mws/scripts/elastic-search/run-bulk /var/data/harvest/*.json
