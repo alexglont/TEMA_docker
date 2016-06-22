@@ -3,18 +3,16 @@
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 # (5.1) `service elasticsearch start` fails silently for some reason
-/usr/share/elasticsearch/bin/elasticsearch & 
+/usr/share/elasticsearch/bin/elasticsearch &
 # then waiting for es to finish setting up
 sleep 10
 # (5.2) Loading up elasticsearch index via MWS
 /var/data/mws/scripts/elastic-search/run-setup
 /var/data/mws/scripts/elastic-search/run-bulk /var/data/harvest/*.json
-# (5.3) Starting mwsd 
+# (5.3) Starting mwsd
 mwsd -I /var/data/harvest/ -d
 # (5.4) Starting TEMA proxy
 nodejs /var/data/tema-proxy/tema-proxy.js &
-# (5.5) Starting MMT
-/var/data/MMT/deploy/mmt -file /var/data/mmtarch/serve.msl &
-# (5.6) Starting MWS/TEMA frontend
+# (5.5) Starting MWS/TEMA frontend
 # for some reason IP needs to be `0.0.0.0` instead of `127.0.0.1`/`localhost` or docker port forwarding fails
-cd /var/data/mws-frontend/ && php5 -S 0.0.0.0:8888 
+cd /var/data/mws-frontend/ && php5 -S 0.0.0.0:8888
