@@ -1,0 +1,62 @@
+#!/bin/bash
+
+#Install MWS, TeMa-Search and TeMa-Proxy with their dependencies
+
+#Disable apt cache
+echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache
+
+#Basic settings and updates
+apt-get update
+apt-get dist-upgrade -y
+apt-get install -y git subversion locales
+apt-get clean
+cd locale-gen /etc/locale-gen
+locale-gen
+echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
+echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
+
+## 1. Installing Dependencies
+
+#1.1. MWS & Dependencies
+apt-get install -y g++ cmake make pkg-config && apt-get clean
+apt-get install -y libmicrohttpd-dev libxml2-dev libleveldb-dev libsnappy-dev libjson0-dev  && apt-get clean
+apt-get install -y libicu-dev libcurl4-gnutls-dev libhtmlcxx-dev && apt-get clean
+
+#1.2. TeMa Frontend Dependencies
+apt-get install -y curl php php-curl elasticsearch && apt-get clean
+
+#1.3. TeMa Proxy Dependencies
+apt-get install -y npm && apt-get clean
+
+#1.4. LaTeX - needed for queries
+#apt-get install -y install texlive-full && apt-get clean
+
+# --!-- MMT Dependencies
+apt-get install -y java-common subversion
+
+## 2. Cloning and Installing MWS & auxiliars
+mkdir /var/data/
+cd /var/data/ && git clone https://github.com/KWARC/mws.git
+cd /var/data/ && git clone https://github.com/KWARC/mws-frontend.git
+cd /var/data/ && git clone https://github.com/KWARC/tema-proxy.git
+cp tema-proxy-config.js /var/data/tema-proxy/config.js
+cd /var/data/mws/ && make && make install && cd ../
+cp mws-es-config.sh /var/data/mws/scripts/elastic-search/config.sh
+
+## --!-- Cloning and install MMT
+cd /var/data/ && mkdir MMT && cd MMT && svn co https://svn.kwarc.info/repos/MMT/deploy
+## (4) Cloning MMT Library & OEIS-specific config
+cd /var/data/ && git clone http://gl.mathhub.info/oeis/TestOEIS.git mmtarch
+cp serve.msl /var/data/mmtarch/serve.msl
+cd /var/data/mws-frontend/ && git checkout oeis-demo
+
+
+
+## (5) Setting up generated content
+# (5.1) Creating havests
+cd /var/data/ && mkdir harvest
+cd /var/data/ && find mmtarch/export/oeis-pres/narration/ -name *.html | xargs -n 10 docs2harvest -c mmtarch/lib/tema-config.json -o harvest
+# (5.2) Indexing
+cd /var/data/ && mkdir index && mws/bin/mws-index -I harvest -o index/
+# (5.3) Generating elasticsearch json index, will out to `havest/` a .json file for every .harvest file
+cd /var/data/ && harvests2json -H harvest/ -I index/

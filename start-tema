@@ -6,13 +6,29 @@ export LC_ALL=en_US.UTF-8
 /usr/share/elasticsearch/bin/elasticsearch &
 # then waiting for es to finish setting up
 sleep 10
+
+echo "checkpoint 1"
+
 # (5.2) Loading up elasticsearch index via MWS
 /var/data/mws/scripts/elastic-search/run-setup
+
+echo "checkpoint 2"
+
 /var/data/mws/scripts/elastic-search/run-bulk /var/data/harvest/*.json
+
+echo "checkpoint 3"
+
 # (5.3) Starting mwsd
 mwsd -I /var/data/harvest/ -d
+
+echo "checkpoint 4"
+
 # (5.4) Starting TEMA proxy
 nodejs /var/data/tema-proxy/tema-proxy.js &
+
+echo "checkpoint 5"
+
+/var/data/MMT/deploy/mmt file /var/data/mmtarch/serve.msl --keepalive &
 # (5.5) Starting MWS/TEMA frontend
 # for some reason IP needs to be `0.0.0.0` instead of `127.0.0.1`/`localhost` or docker port forwarding fails
-cd /var/data/mws-frontend/ && php5 -S 0.0.0.0:8888
+cd /var/data/mws-frontend/ && php -S 0.0.0.0:8888
