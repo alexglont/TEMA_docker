@@ -1,0 +1,79 @@
+/*
+
+Copyright (C) 2010-2013 KWARC Group <kwarc.info>
+
+This file is part of MathWebSearch.
+
+MathWebSearch is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+MathWebSearch is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MathWebSearch.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+/**
+ *  @file config.h
+ *  @brief Configuration header
+ */
+
+#ifndef _CONFIG_CONFIG_H
+#define _CONFIG_CONFIG_H
+
+// CMake Exported
+
+#define MWS_NAME                "${PROJECT_NAME}"
+#define MWS_VERSION             "${MWS_FULL_VERSION}"
+#define MATHMLTAGS_PATH         "${PROJECT_BINARY_DIR}/src/crawler/utils/MwsMathMLTags.txt"
+#define GETRESPONSE_PATH        "${PROJECT_BINARY_DIR}/src/crawler/daemon/GetResponse.html"
+#define HARVESTFILES_PATH       "${PROJECT_SOURCE_DIR}/data"
+#define MWS_TESTDATA_PATH       "${PROJECT_SOURCE_DIR}/test/data"
+
+#define MWS_BUILD   MWS_NAME "-" MWS_VERSION " as of " __DATE__ " " __TIME__
+
+// Common
+
+//! Extension of Mws Harvest files
+#define DEFAULT_MWS_HARVEST_EXTENSION  "harvest"
+
+// MWS Daemon
+#define DEFAULT_MWS_PORT            9590
+
+// MWS Query
+
+/// Number of computed hits (returned or not)
+#define MAX_QUERY_RESULT_TOTAL      12000
+#define DEFAULT_QUERY_RESULT_TOTAL  100000
+
+/// Number of requested results
+#define MAX_QUERY_RESULT_SIZE       100
+#define DEFAULT_QUERY_RESULT_SIZE   30
+
+/// Query offset
+#define MAX_QUERY_OFFSET            12000
+#define DEFAULT_QUERY_OFFSET        0
+
+/// Request total number of results
+#define DEFAULT_QUERY_TOTALREQ      true
+
+// Index
+#define INDEX_MEMSECTOR_FILE    "index.memsector"
+#define MEANING_DICTIONARY_FILE "meanings.dat"
+#define CRAWL_DB_FILE           "crawl.db"
+#define FORMULA_DB_FILE         "formula.db"
+
+#cmakedefine APPLY_RESTRICTIONS
+
+// Schema Daemon
+#define DEFAULT_SCHEMA_PORT 9080
+
+// Schema Query
+#define DEFAULT_SCHEMA_DEPTH 3
+
+#endif // _CONFIG_CONFIG_H
